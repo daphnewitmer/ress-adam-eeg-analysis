@@ -5,13 +5,13 @@ function save_file(EEG, params, timestamp)
     if isempty(save) | contains('YyyesYes', save)
         
         name = sprintf('%s_S%s%s.set', string(EEG.filename), string(params.paths.session(8)), timestamp);
-        pop_saveset( EEG, 'filename', name, 'filepath', params.paths.preprocessed);
+        pop_saveset( EEG, 'filename', name, 'filepath', strcat(params.paths.preprocessed, params.paths.trial_type));
 
         text = sprintf('%s\n', string(cellstr(EEG.comments)));
         text = regexprep( text, '\', '\\\');
 
         
-        txt_file = fopen(params.paths.preprocessed + string(extractBefore(name, '.set')) + '.txt', 'w');
+        txt_file = fopen(params.paths.preprocessed + string(params.paths.trial_type) + string(extractBefore(name, '.set')) + '.txt', 'w');
         fprintf(txt_file, text);
         fclose(txt_file);
     end

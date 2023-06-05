@@ -4,7 +4,7 @@ function EEG = basic_preprocessing(EEG, params)
     prompt = "Do you want to add channel locations? Y/N [Y]: ";
     add_locations = input(prompt,"s");
     if isempty(add_locations) | contains('YyyesYes', add_locations)
-        EEG = pop_chanedit(EEG, 'lookup', strcat(params.paths.eeglab,'plugins\\dipfit\\standard_BEM\\elec\\standard_1005.elc'));
+        EEG = pop_chanedit(EEG, 'lookup', strcat(params.paths.eeglab,'/plugins//dipfit//standard_BEM//elec//standard_1005.elc'));
         EEG = eeg_checkset( EEG );
     end
 

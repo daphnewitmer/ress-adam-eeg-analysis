@@ -63,5 +63,5 @@ topoplot(map2plot./max(map2plot),EEG.chanlocs,'maplimits',[-.7 .7],'numcontour',
 title([ 'RESS for ' num2str(peakfreq2) ' Hz' ])
 title([ 'Electrode power at ' num2str(peakfreq2) ' Hz' ])
 
-filename = sprintf("%s\\img\\%s_ress", params.paths.results, extractBefore(EEG.filename, '.set'));
+filename = sprintf("%s/img/%s_ress", params.paths.results, extractBefore(EEG.filename, '.set'));
 saveas(f, filename,'png');

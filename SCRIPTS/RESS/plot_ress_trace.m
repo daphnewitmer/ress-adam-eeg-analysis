@@ -43,7 +43,7 @@ ylabel('Amplitude')
 xlabel('Time')
 title('RESS Trace')
 
-filename = sprintf("%s\\img\\%s_ress_trace", params.paths.results, extractBefore(EEG.filename, '.set'));
+filename = sprintf("%s/img/%s_ress_trace", params.paths.results, extractBefore(EEG.filename, '.set'));
 saveas(gcf, filename,'fig');
 
 

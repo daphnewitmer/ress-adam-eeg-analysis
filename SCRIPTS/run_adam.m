@@ -5,23 +5,35 @@ files = dir(fullfile(params.paths.ress_trace,'*.set'));
 sprintf('%s\n', files.name)
 
 %% GENERAL SPECIFICATIONS OF THE EXPERIMENT 
-filenames = {'P03_B_Locfix_run1+2_S1_2323'}; % comma = test - train
+filenames_ress = {
+     'P03_B_Locfix_run1+2_S1_2323'...
+ };
+%      'P07_B_Locfix_run1+2_S2_3142'...
+%      'P07_FA_Loc_run1+2_S1_31356'...
+%      'P07_OM_LOC_run1+2_S2_3149'}; % comma = test - train
+
+filenames_other = {'P03_B_Locfix_run1+2_S1_2323'...
+     'P03_B_Locfix_run1+2_S2_5247'...
+     'P07_B_Loc_run1+2_S1_31345'...
+     'P07_B_Locfix_run1+2_S2_3142'...
+     'P07_FA_Loc_run1+2_S1_31356'...
+     'P07_OM_LOC_run1+2_S2_3149'};
 
 %% GENERAL ANALYSIS CONFIGURATION SETTINGS
 cfg = [];                                  % clear the config variable  
 cfg.datadir = params.paths.ress_trace;
 cfg.model = 'BDM';                         % backward decoding ('BDM') or forward encoding ('FEM')
 cfg.raw_or_tfr = 'raw';                    % classify raw or time frequency representations ('tfr')
-cfg.nfolds = 1;                            % the number of folds to use
+cfg.nfolds = 4;                            % the number of folds to use
 cfg.class_method = 'AUC';             	   % the performance measure to use
 cfg.crossclass = 'yes';                    % 'no' = faster but no GAT
 cfg.channelpool = 'FREQUENCY';
 
 %% FIRST LEVEL ANALYSES
-cfg.filenames = filenames;              % specifies filenames (EEG in this case)
+cfg.filenames = filenames_ress;              % specifies filenames (EEG in this case)
 cfg.class_spec{1} = cond_string(params.low_freq_con);     % the first stimulus class
 cfg.class_spec{2} =  cond_string(params.high_freq_con);   % the second stimulus class
-cfg.outputdir = params.paths.results;                     % output location
+cfg.outputdir = strcat(params.paths.results, 'RESS/');                     % output location
 adam_MVPA_firstlevel(cfg);                                % run first level analysis
 
 %% PLOT SINGLE SUBJECT RESULTS OF THE HIGH_LOW_FREQUENCY COMPARISON
