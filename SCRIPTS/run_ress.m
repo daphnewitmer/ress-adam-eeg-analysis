@@ -1,12 +1,12 @@
 clear all
 params_config_file
 
-params.paths.trial_type = 'localizer/';
+params.paths.trial_type = 'self_report/';
 
 files = dir(fullfile(strcat(params.paths.preprocessed, params.paths.trial_type),'*.set')); 
 sprintf('%s\n', files.name)
 
-params.paths.filenames = {'P07_B_Loc_run1+2_S1_31345'};
+params.paths.filenames = {'P03_B_SR_run1+2_S1_5447'};
 
 %% load data 
 ALLEEG = load_files(params, strcat(params.paths.preprocessed,params.paths.trial_type), '.set');

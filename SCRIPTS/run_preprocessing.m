@@ -2,13 +2,14 @@ clear
 params_config_file
 
 params.paths.participant_nr = 'P03/';
-params.paths.session = 'Session2/';
-params.paths.trial_type = 'localizer/';
+params.paths.session = 'Session1/';
+params.paths.trial_type = 'self_report/';
+params.paths.file_type = '.bdf';
 
 files = dir(fullfile(strcat(params.paths.data, params.paths.participant_nr, params.paths.session),'*.bdf')); 
 sprintf('%s\n', files.name)
 
-params.paths.filenames = {'P03_B_Locfix_run1', 'P03_B_Locfix_run2'}; 
+params.paths.filenames = {'P03_B_SR_run1', 'P03_B_SR_run2'}; 
 
 %% load data 
 ALLEEG = load_files(params, params.paths.data, '.bdf'); % load set or bdf files 

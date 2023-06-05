@@ -33,7 +33,7 @@ cfg.channelpool = 'FREQUENCY';
 cfg.filenames = filenames_ress;              % specifies filenames (EEG in this case)
 cfg.class_spec{1} = cond_string(params.low_freq_con);     % the first stimulus class
 cfg.class_spec{2} =  cond_string(params.high_freq_con);   % the second stimulus class
-cfg.outputdir = strcat(params.paths.results, 'RESS/');                     % output location
+cfg.outputdir = strcat(params.paths.results, 'RESS_ADAM/');                     % output location
 adam_MVPA_firstlevel(cfg);                                % run first level analysis
 
 %% PLOT SINGLE SUBJECT RESULTS OF THE HIGH_LOW_FREQUENCY COMPARISON
