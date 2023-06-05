@@ -12,12 +12,7 @@ filenames_ress = {
 %      'P07_FA_Loc_run1+2_S1_31356'...
 %      'P07_OM_LOC_run1+2_S2_3149'}; % comma = test - train
 
-filenames_other = {'P03_B_Locfix_run1+2_S1_2323'...
-     'P03_B_Locfix_run1+2_S2_5247'...
-     'P07_B_Loc_run1+2_S1_31345'...
-     'P07_B_Locfix_run1+2_S2_3142'...
-     'P07_FA_Loc_run1+2_S1_31356'...
-     'P07_OM_LOC_run1+2_S2_3149'};
+filenames_other = {};
 
 %% GENERAL ANALYSIS CONFIGURATION SETTINGS
 cfg = [];                                  % clear the config variable  
@@ -70,14 +65,14 @@ adam_plot_MVPA(cfg, mvpa_stats);  % actual plotting, combine EEG/MEG results
 cfg = [];                                    % clear the config variable
 cfg.startdir = params.paths.results; % path to first level results 
 cfg.mpcompcor_method = 'cluster_based';      % multiple comparison correction method
-cfg.electrode_def = {'P1'};                 % electrode to plot
+cfg.electrode_def = {'6hz'};                 % electrode to plot
 erp_stats = adam_compute_group_ERP(cfg);     
 
 %% COMPUTE THE DIFFERENCE BETWEEN THE ERPs FROM THE HIGH_LOW_FREQUENCY FIRST LEVEL ANALYSIS
 cfg = [];                                    % clear the config variable
 cfg.startdir = params.paths.results; % path to first level results 
 cfg.mpcompcor_method = 'cluster_based';      % multiple comparison correction method
-cfg.electrode_def = {'P1'};                 % electrode to plot
+cfg.electrode_def = {'6hz'};                 % electrode to plot
 cfg.condition_method = 'subtract';           % compute subtraction of ERP 
 erp_stats_dif = adam_compute_group_ERP(cfg); 
 
@@ -86,5 +81,13 @@ cfg = [];                                    % clear the config variable
 cfg.singleplot = true;                       % all graphs in a single plot
 cfg.line_colors = {[.75 .75 .75] [.5 .5 .5] [0 0 .5]};  % change the colors
 adam_plot_MVPA(cfg, erp_stats, erp_stats_dif);   % actual plotting
+
+%% COMPARE RESS VS OTHER
+cfg = [];
+cfg.mpcompcor_method = ' cluster_based';
+ress_vs_other_stats = adam_compare_MPVA_stats(cfg, ress_stats, other_stats);
+cfg = [];
+cfg.plot_order = {RESS_ADAM OTHER_ADAM};
+adam_plot_MVPA(cfg, ress_vs_other_stats)
 
 
