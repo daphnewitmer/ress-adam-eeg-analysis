@@ -50,7 +50,7 @@ function plot_continuous_data(EEG, params, fignum, timestamp)
 
     subplot(232)
     topoplot(low_freq./max(low_freq),EEG.chanlocs,'electrodes','numbers');
-     set(gca,'clim',[-.9 .9])
+    set(gca,'clim',[-.9 .9])
     colorbar
     title(string(params.low_freq) + ' hz')
     
@@ -59,6 +59,19 @@ function plot_continuous_data(EEG, params, fignum, timestamp)
     set(gca,'clim',[-.9 .9])
     colorbar
     title(string(params.high_freq) + ' hz')
+
+    %% Welch
+
+    % create Hann window
+    winsize = 2*EEG.srate; % 2-second window
+    hannw = .5 - cos(2*pi*linspace(0,1,winsize))./2;
+    
+    % number of FFT points (frequency resolution)
+    nfft = EEG.srate*100;
+    
+    subplot(235)
+    pwelch(EEG.data(19,:),hannw,round(winsize/4),nfft,EEG.srate);
+    set(gca,'xlim',[0 40])
 
 
 %     %% static power spectrum for specific channel

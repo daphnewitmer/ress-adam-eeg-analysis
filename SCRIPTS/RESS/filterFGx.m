@@ -72,7 +72,7 @@ empVals(2) = hz(idx-1+dsearchn(fx(idx:end)',.5)) - hz(dsearchn(fx(1:idx)',.5));
 %% inspect the Gaussian (turned off by default)
 
 if showplot
-    figure(10001+showplot),clf
+%     figure(10001+showplot),clf
     plot(hz,fx,'o-')
     hold on
     plot([hz(dsearchn(fx(1:idx)',.5)) hz(idx-1+dsearchn(fx(idx:end)',.5))],[fx(dsearchn(fx(1:idx)',.5)) fx(idx-1+dsearchn(fx(idx:end)',.5))],'k--')

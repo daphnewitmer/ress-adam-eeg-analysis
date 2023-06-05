@@ -8,7 +8,8 @@ EEG.nbchan = 2;
 EEG.data(1,:) = ress.ts1';
 EEG.data(2,:) = ress.ts2';
 EEG.data(3:end,:) = [];
-chanlocs = struct('labels', { 'P1' 'P2'});
+chanlocs = struct('labels', { '6hz' '7.5hz'});
 EEG.chanlocs = pop_chanedit( chanlocs );
-EEG = epoch_data(EEG); % to input in ADAM
-pop_saveset(EEG);
+% plot_ress_trace;
+EEG = epoch_data(EEG, params, 'NaN', true); % to input in ADAM
+pop_saveset(EEG,'filename', EEG.filename, 'filepath', EEG.filepath);

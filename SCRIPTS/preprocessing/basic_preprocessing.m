@@ -1,8 +1,12 @@
 function EEG = basic_preprocessing(EEG, params)
 
     % add channel locations
-    EEG = pop_chanedit(EEG, 'lookup', strcat(params.paths.eeglab,'plugins\\dipfit\\standard_BEM\\elec\\standard_1005.elc'));
-    EEG = eeg_checkset( EEG );
+    prompt = "Do you want to add channel locations? Y/N [Y]: ";
+    add_locations = input(prompt,"s");
+    if isempty(add_locations) | contains('YyyesYes', add_locations)
+        EEG = pop_chanedit(EEG, 'lookup', strcat(params.paths.eeglab,'plugins\\dipfit\\standard_BEM\\elec\\standard_1005.elc'));
+        EEG = eeg_checkset( EEG );
+    end
 
     % check powerplot before re-referencing
     pop_prop( EEG, 1, [69  70], NaN, {'freqrange',[2 55] });
@@ -46,22 +50,33 @@ function EEG = basic_preprocessing(EEG, params)
         EEG.comments = pop_comments(EEG.comments,'','Dataset was highpass filtered at 1 Hz.',1);
     end
 
-    % TODO: add cleanline
-
+    % cleanline
+    prompt = "Do you want to run cleanline? Y/N [Y]: ";
+    cleanline = input(prompt,"s");
+    if isempty(cleanline) | contains('YyyesYes', cleanline)
+        EEG = pop_cleanline(EEG, 'bandwidth',2,'chanlist',[1:62] ,'computepower',1,'linefreqs',50,'newversion',0,'normSpectrum',0,'p',0.01,'pad',2,'plotfigures',0,'scanforlines',0,'sigtype','Channels','taperbandwidth',2,'tau',100,'verb',1,'winsize',4,'winstep',1);
+        EEG.comments = pop_comments(EEG.comments,'','Cleanline performed. ',1);
+        EEG.setname= sprintf('%s_cline', string(EEG.setname));
+        EEG = eeg_checkset( EEG );
+    end
+   
     % remove signal before and after trial start
     % TODO: check onset conditions
-    begin_point_exp = EEG.event(1).latency;
-    EEG = eeg_eegrej( EEG, [(begin_point_exp - 500) begin_point_exp] ); % onset condition - 500 miliseconds
-    end_point_exp = EEG.event(end).latency;
-    EEG = eeg_eegrej( EEG, [end_point_exp (EEG.pnts - 500)] ); % onset condition 12 + 500 miliseconds
-    EEG.setname= sprintf('%s_rej', string(EEG.setname));
-    EEG = eeg_checkset( EEG );
-
-    % remove external channels
-    % TODO: if re-referenced to one channel, remove the other here aswell?
-    prompt = "Do you want to remove the external channels? Y/N [Y]: ";
+    prompt = "Do you want to remove begin and end of trial? Y/N [Y]: ";
     remove = input(prompt,"s");
     if isempty(remove) | contains('YyyesYes', remove)
+        begin_point_exp = EEG.event(1).latency;
+        EEG = eeg_eegrej( EEG, [(begin_point_exp - 500) begin_point_exp] ); % onset condition - 500 miliseconds
+        end_point_exp = EEG.event(end).latency;
+        EEG = eeg_eegrej( EEG, [end_point_exp (EEG.pnts - 500)] ); % onset condition 12 + 500 miliseconds
+        EEG.setname= sprintf('%s_rej', string(EEG.setname));
+        EEG = eeg_checkset( EEG );
+    end
+
+    % remove externals (if re-ref to one channel the other is not removed atm)
+    prompt = "Do you want to remove the external channels? Y/N [Y]: ";
+    remove_ex = input(prompt,"s");
+    if isempty(remove_ex) | contains('YyyesYes', remove_ex)
         EEG = pop_select( EEG, 'nochannel',{'EXG1','EXG2','EXG3','EXG4','EXG7','EXG8'});
         EEG.setname= sprintf('%s_remex', string(EEG.setname));
         EEG = eeg_checkset( EEG );
